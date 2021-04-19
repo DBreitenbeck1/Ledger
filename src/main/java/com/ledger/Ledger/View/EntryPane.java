@@ -2,9 +2,11 @@ package com.ledger.Ledger.View;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -30,18 +32,26 @@ public class EntryPane extends JPanel implements ActionListener {
 	ColumnPane assetPane = new ColumnPane(assetDebit, assetCredit);
 	ColumnPane liabPane = new ColumnPane(liabDebit, liabCredit);
 	ColumnPane equityPane = new ColumnPane(equityDebit, equityCredit);
+	EntryField[] entries = {
+			assetDebit,
+			assetCredit,
+			liabDebit,
+			liabCredit,
+			equityDebit,
+			equityCredit};
 
-
+	JButton submit = new JButton();
+	
 	EntryPane(){
 		this.setBackground(Color.darkGray);
 		this.setBounds(0,0,1000,300);
 		this.setLayout(new FlowLayout());
-		
 	//	addFields();
 	//	addAssetLabel();
 		this.add(assetPane);
 		this.add(liabPane);
 		this.add(equityPane);
+		addSubmit();
 		
 	}
 	
@@ -58,16 +68,34 @@ public class EntryPane extends JPanel implements ActionListener {
 	
 	}
 	
+	private void addSubmit(){
+		
+		submit.setFont(new Font("Comic Sans", Font.BOLD,20));
+		
+		submit.setOpaque(true);
+		
+		submit.addActionListener(this);
+		submit.setText("Submit");
+		submit.setFocusable(false);
+		submit.setBounds(200,100,100,50);
+		this.add(submit);
+	}
+	
+	
 
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		for(int i =0; i<entries.length;i++) {
+			double value = entries[i].getValue();
+			if(value!=0.0) {
+				System.out.println(value);
+				System.out.println(entries[i].getColumn());
+			}
+		}
 		
 	}
 
-	private void createColumnPane() {
-		
-	}
+	
 	
 }

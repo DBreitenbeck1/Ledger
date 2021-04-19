@@ -11,7 +11,7 @@ import javax.swing.JTextField;
 
 import com.ledger.Ledger.BalanceSheet.COLUMN;
 
-public class EntryField extends JTextField implements ActionListener {
+public class EntryField extends JTextField {
 	boolean isCredit;
 	COLUMN col;
 	double value;
@@ -24,7 +24,6 @@ public class EntryField extends JTextField implements ActionListener {
 		this.setForeground(new Color(255,255,255));
 		this.setBackground(Color.black);
 		this.setCaretColor(Color.WHITE);
-		this.addActionListener(this);
 		this.col=col;
 		this.isCredit=credit;
 	}
@@ -32,18 +31,26 @@ public class EntryField extends JTextField implements ActionListener {
 	
 	private boolean validateData() {
 		try {
+			if (!this.getText().isEmpty()) {
 			this.value= Double.parseDouble(this.getText());
+			} else {
+				this.value=0.0;
+			}
 			return true;
 		}catch(NumberFormatException e){
 			System.out.println("Invalid entry");
 			return false;
 		}
-		
+
 	}
 	
-	public double getValue() {
+	public double getValue() {	
+		if(validateData()) {
+			return value;
+		} else {
+			return -1.0;
+		}
 		
-		return value;
 	}
 	
 	public COLUMN getColumn() {
@@ -55,12 +62,7 @@ public class EntryField extends JTextField implements ActionListener {
 	}
 
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		System.out.println(this.getText());
-		System.out.println(validateData());
-		
-	}
+
 	
 	
 
