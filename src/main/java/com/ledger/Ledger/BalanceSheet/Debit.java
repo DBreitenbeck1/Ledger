@@ -1,4 +1,4 @@
-package com.ledger.Ledger.Entities;
+package com.ledger.Ledger.BalanceSheet;
 
 public class Debit {
 	Double amount;

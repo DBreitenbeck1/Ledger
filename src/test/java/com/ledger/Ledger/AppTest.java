@@ -5,10 +5,12 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.ledger.Ledger.Entities.COLUMN;
-import com.ledger.Ledger.Entities.Credit;
-import com.ledger.Ledger.Entities.Debit;
-import com.ledger.Ledger.Entities.Entry;
+import com.ledger.Ledger.BalanceSheet.BalanceSheet;
+import com.ledger.Ledger.BalanceSheet.COLUMN;
+import com.ledger.Ledger.BalanceSheet.Credit;
+import com.ledger.Ledger.BalanceSheet.Debit;
+import com.ledger.Ledger.BalanceSheet.Entry;
+import com.ledger.Ledger.IncomeStatement.IncomeEntry;
 
 /**
  * Unit test for simple App.
@@ -77,10 +79,8 @@ public class AppTest
     
    @Test
    public void testDebitColumn() {
-	   COLUMN column = COLUMN.getColumn(1);
-	   
+	   COLUMN column = COLUMN.getColumn(1);   
 	   Debit dr = new Debit(15.4, column);
-	   
 	   assertEquals(COLUMN.ASSETS, dr.getColumn());
    }
     
@@ -88,11 +88,9 @@ public class AppTest
    public void entryTestisValid() {
 	   COLUMN cold = COLUMN.getColumn(1);
 	   COLUMN colc = COLUMN.getColumn(1);
-	   
 	   Debit dr = new Debit(15.4, cold);
 	   Credit cr = new Credit(15.4, colc);
 	   Entry entry = new Entry(dr,cr);
-	   
 	   assertTrue(entry.getValid());
    }
    
@@ -201,6 +199,70 @@ public class AppTest
 	   assertEquals((Double) 84.6, balance);
    }
    
+   @Test
+   public void BalanceSheetFirstTest() {
+	   COLUMN cold = COLUMN.getColumn(1);
+	   COLUMN colc = COLUMN.getColumn(3);
+	   Debit dr = new Debit(15.4, cold);
+	   Credit cr = new Credit(15.4, colc);
+	   Entry entry1 = new Entry(dr,cr);
+	  
+	    BalanceSheet bs = new BalanceSheet();
+	    bs.addEntry(entry1);
+	    
+	    assertEquals(1,bs.numberEntries());
+   }
+   
+   @Test
+   public void BalanceSheetSecondTest() {
+	   COLUMN cold = COLUMN.getColumn(1);
+	   COLUMN colc = COLUMN.getColumn(3);
+	   Debit dr = new Debit(15.4, cold);
+	   Credit cr = new Credit(15.4, colc);
+	   Entry entry1 = new Entry(dr,cr);
+	   cold = COLUMN.getColumn(1);
+	   colc = COLUMN.getColumn(2);
+	   dr = new Debit(25.75, cold);
+	    cr = new Credit(22.75, colc);
+	    Entry entry2 = new Entry(dr,cr);
+	   
+	   
+	    BalanceSheet bs = new BalanceSheet();
+	    bs.addEntry(entry1);
+	    bs.addEntry(entry2);
+	    
+	    assertEquals(1,bs.numberEntries());
+   }
+   
+   
+
+   @Test
+   public void BalanceSheetFirstBalanceTest() {
+	   COLUMN cold = COLUMN.getColumn(1);
+	   COLUMN colc = COLUMN.getColumn(3);
+	   Debit dr = new Debit(15.4, cold);
+	   Credit cr = new Credit(15.4, colc);
+	   Entry entry1 = new Entry(dr,cr);
+	   cold = COLUMN.getColumn(1);
+	   colc = COLUMN.getColumn(2);
+	   dr = new Debit(22.75, cold);
+	    cr = new Credit(22.75, colc);
+	    Entry entry2 = new Entry(dr,cr);
+	    BalanceSheet bs = new BalanceSheet();
+	    bs.addEntry(entry1);
+	    bs.addEntry(entry2);
+	    bs.calcBalance();
+	    assertEquals((Double)38.15,bs.getBalance());
+	    
+   }
+   
+   
+   @Test
+   public void IncomeStatementFirstTest() {
+	   IncomeEntry entry =new IncomeEntry(100.00, 20.00);
+	   entry.calcNetIncome();
+	   assertEquals((Double)80.00,entry.getNetIncome());
+   }
    
    
 }

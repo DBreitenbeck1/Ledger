@@ -1,10 +1,10 @@
-package com.ledger.Ledger.Entities;
+package com.ledger.Ledger.BalanceSheet;
 
 public class Entry {
 	
 	Debit debit;
 	Credit credit;
-	Double balance=0.0;
+	Double balance=0.00;
 	Integer account; 
 	Boolean isValid;
 	
@@ -20,7 +20,7 @@ public class Entry {
 	}
 		
 	public boolean isValidEntry(Debit debit,Credit credit) {
-		if(credit.getAmount()==debit.getAmount()) {
+		if(credit.getAmount().equals(debit.getAmount())) {
 			return true;
 		}else {
 			return false;
@@ -57,7 +57,13 @@ public class Entry {
 		}
 	}
 	
+	public COLUMN getDebitColumn() {
+		return debit.getColumn();
+	}
 	
+	public COLUMN getCreditColumn() {
+		return credit.getColumn();
+	}
 	
 	public Double getBalance() {
 		return this.balance;
