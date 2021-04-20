@@ -1,4 +1,4 @@
-package com.ledger.Ledger;
+package com.ledger.Ledger.Database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -10,6 +10,7 @@ import com.ledger.Ledger.BalanceSheet.COLUMN;
 import com.ledger.Ledger.BalanceSheet.Credit;
 import com.ledger.Ledger.BalanceSheet.Debit;
 import com.ledger.Ledger.BalanceSheet.Entry;
+import com.ledger.Ledger.Database.DatabaseConnector;
 import com.ledger.Ledger.IncomeStatement.IncomeEntry;
 
 /**
