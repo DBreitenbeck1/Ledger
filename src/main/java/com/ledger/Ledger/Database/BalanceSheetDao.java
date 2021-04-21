@@ -17,6 +17,10 @@ public class BalanceSheetDao {
 			"Equity_Debit", "Equity_Credit", 
 			"Notes", "Date"};
 	
+	static private java.util.Date date = new java.util.Date();
+	static private java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+	
+	
 	
 	public BalanceSheetDao(Connection connection) {
 		this.conn=connection;
@@ -41,19 +45,63 @@ public class BalanceSheetDao {
 	
 	public static void addEntry(
 			double debit, COLUMN deb, 
-			double credit, COLUMN cred) throws Exception{	
+			double credit, COLUMN cred
+			) throws Exception{	
 		String debCol = selectDebitColumn(deb);
 		String credCol = selectCreditColumn(cred);
 		try {
 			PreparedStatement add =
 			conn.prepareStatement("INSERT INTO Balancesheet ("
-			+ debCol + ", " + credCol + ") VALUES (" + debit +", " + credit + ")");
+			+ debCol + ", " + credCol 
+			+ ", Date) VALUES (" + debit +", " + credit + ", ?)");
+			add.setDate(1, sqlDate);
 			add.executeUpdate();
 		}catch (Exception e) {
 			System.out.println(e);
 		}
 		
 	}
+	
+	//Overloaded for Notes + Date
+	public static void addEntry(
+			double debit, COLUMN deb, 
+			double credit, COLUMN cred,
+			String n 
+			//String date
+			) throws Exception{	
+		String debCol = selectDebitColumn(deb);
+		String credCol = selectCreditColumn(cred);
+		try {
+			PreparedStatement add =
+			conn.prepareStatement("INSERT INTO Balancesheet ("
+			+ debCol + ", " + credCol 
+			+ ", Notes, Date) VALUES (" + debit +", " + credit + ", '"
+			+ n +"', ?" + 
+			//sqlDate +
+			")");
+			add.setDate(1, sqlDate);
+			add.executeUpdate();
+		}catch (Exception e) {
+			System.out.println(e);
+		}
+
+	}
+	
+	
+	public static void addNotes(int id, String n) {
+		try {
+			PreparedStatement add =
+			conn.prepareStatement("UPDATE Balancesheet "
+					+ "SET Notes = '"+ n  
+					  //WHERE ID="+id
+					+ "' WHERE ID="+id);
+			add.executeUpdate();
+		}catch (Exception e) {
+			System.out.println(e);
+		}
+
+	}
+	
 	
 	public static double getDebit(int id)throws Exception{
 		double debit = 0.0;
@@ -111,6 +159,35 @@ public class BalanceSheetDao {
 		}
 		
 		return r;
+	}
+	
+	
+	public static ArrayList<String> getEntry(int id){
+		ArrayList<String> entry = new ArrayList<>();
+		String ent ="";
+		try {
+			PreparedStatement statement =
+			conn.prepareStatement("SELECT * FROM Balancesheet WHERE ID="+id);
+			ResultSet results = statement.executeQuery();
+			
+			while(results.next()) {
+				for(int i =0; i<6;i++) {
+			
+				ent = (String.valueOf(results.getDouble(fields[i]))); 
+				//System.out.println(ent);
+				entry.add(ent);
+				}
+				for(int i = 6; i<fields.length;i++) {
+					ent += (results.getString(fields[i]));
+				}
+				
+			}
+			
+		}catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		return entry;
 	}
 	
 
@@ -173,6 +250,26 @@ public class BalanceSheetDao {
 		}
 	}
 
+	private static String getStringResult(String field, int id) {
+		String result = "";
+		try {
+	
+				PreparedStatement statement =
+						conn.prepareStatement("SELECT "+ field +" FROM Balancesheet "
+								+ "WHERE ID="+id);
+				ResultSet results = statement.executeQuery();
+				results.next();
+				result = results.getString(1);
+			}catch(Exception e) {
+				System.out.println(e);
+			}
+		
+		
+		return result;
+	}
+	
+	
+	
 	
 	private static double getAmountResult(String field, int id) {
 		double result = -1;
