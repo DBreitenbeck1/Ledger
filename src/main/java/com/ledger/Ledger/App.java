@@ -17,7 +17,9 @@ public class App
     {
     //	new MainFrame();
     	
-    
+    FileManager FM = new FileManager("Test");
+    FM.writeToFile("This is a test");
+    FM.close();
     	
     	
     	

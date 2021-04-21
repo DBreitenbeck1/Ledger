@@ -22,7 +22,7 @@ public class FileManager {
 	private Formatter x;
 	
 	public FileManager(String fileName) throws IOException{
-		file = new File("src/resource/"+fileName+".txt");
+		file = new File("src/resources/"+fileName+".txt");
 		writer = new FileWriter(file, true);
 		reader = new FileReader(file);
 		BR = new BufferedReader(reader);
