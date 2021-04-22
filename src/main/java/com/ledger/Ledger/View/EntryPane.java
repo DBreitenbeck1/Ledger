@@ -11,6 +11,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.ledger.Ledger.BalanceSheet.COLUMN;
+import com.ledger.Ledger.BalanceSheet.Credit;
+import com.ledger.Ledger.BalanceSheet.Debit;
+import com.ledger.Ledger.BalanceSheet.Entry;
 
 public class EntryPane extends JPanel implements ActionListener {
 	COLUMN colA=COLUMN.ASSETS;
@@ -81,20 +84,58 @@ public class EntryPane extends JPanel implements ActionListener {
 		this.add(submit);
 	}
 	
+	private boolean checkValid(){
+		int count=0;
+		for(int i =0; i<entries.length;i++) {
+			if(entries[i].getValue()!=0.0) {
+				count++;
+			}
+		}
+		if(count>2) {
+			return false;
+		}else {
+			return true;
+		}
+	}
 	
 
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		for(int i =0; i<entries.length;i++) {
-			double value = entries[i].getValue();
-			if(value!=0.0) {
-				System.out.println(value);
-				System.out.println(entries[i].getColumn());
+		Credit credit =null;
+		Debit debit =null;
+		int count=0;
+		if(!checkValid()) {
+			System.out.println("Invalid Entry");
+		} else {
+			for(int i =0; i<entries.length;i++) {
+				double value = entries[i].getValue();
+				if(value!=0.0) {
+					count++; 
+					if(count>2) {
+						System.out.println("Invalid Entry");
+						break;
+					}
+					if(entries[i].isCredit) {
+						credit = new Credit(value, entries[i].getColumn());
+						
+					} else {
+						debit = new Debit(value, entries[i].getColumn());
+						
+					}
+					
+				}
+				
 			}
+			
+			Entry entry =new Entry(debit,credit);
+		
+		
 		}
 		
 	}
+	
+	
 
 	
 	
