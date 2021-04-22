@@ -7,6 +7,7 @@ public class Entry {
 	Double balance=0.00;
 	Integer account; 
 	Boolean isValid;
+	String note;
 	
 	public Entry(){
 		
@@ -83,5 +84,8 @@ public class Entry {
 		return this.debit.getAmount();
 	}
 	
+	public void addNotes(String note) {
+		this.note=note;
+	}
 	
 }

@@ -11,20 +11,30 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.ledger.Ledger.BalanceSheet.COLUMN;
+import com.ledger.Ledger.Database.DatabaseConnector;
 
 public class BalancePane extends JPanel implements ActionListener {
-	
+	DatabaseConnector DC;
 	
 	public BalancePane(){
 		this.setBackground(Color.GRAY);
 		this.setBounds(0,0,1000,450);
 		COLUMN c = COLUMN.ASSETS;
-		EntryPane EP = new EntryPane();
+		DCHookup();
+		EntryPane EP = new EntryPane(DC);
 		this.add(EP);
-
+		
 	}
 	
 	
+	private void DCHookup() {
+		DatabaseConnector dcb = new DatabaseConnector("com.mysql.cj.jdbc.Driver",
+				"jdbc:mysql://localhost:3306/Ledger?useSSL=FALSE&serverTimezone=America/Detroit");
+		dcb.setUsername("root");
+		dcb.setPassword("Perepiteia#");
+		
+		this.DC= dcb;
+	}
 	
 
 	@Override

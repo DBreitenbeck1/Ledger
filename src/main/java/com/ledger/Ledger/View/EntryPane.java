@@ -5,6 +5,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -14,6 +16,8 @@ import com.ledger.Ledger.BalanceSheet.COLUMN;
 import com.ledger.Ledger.BalanceSheet.Credit;
 import com.ledger.Ledger.BalanceSheet.Debit;
 import com.ledger.Ledger.BalanceSheet.Entry;
+import com.ledger.Ledger.Database.BalanceSheetDao;
+import com.ledger.Ledger.Database.DatabaseConnector;
 
 public class EntryPane extends JPanel implements ActionListener {
 	COLUMN colA=COLUMN.ASSETS;
@@ -42,18 +46,26 @@ public class EntryPane extends JPanel implements ActionListener {
 			liabCredit,
 			equityDebit,
 			equityCredit};
+	
+	NotePane notes = new NotePane();
 
 	JButton submit = new JButton();
+	BalanceSheetDao BSD;
 	
-	EntryPane(){
+	
+	Entry entry;
+	
+	EntryPane(DatabaseConnector DC){
+		this.BSD=new BalanceSheetDao(DC.getConnection());
 		this.setBackground(Color.darkGray);
-		this.setBounds(0,0,1000,300);
+		this.setBounds(0,0,1500,300);
 		this.setLayout(new FlowLayout());
 	//	addFields();
 	//	addAssetLabel();
 		this.add(assetPane);
 		this.add(liabPane);
 		this.add(equityPane);
+		this.add(notes);
 		addSubmit();
 		
 	}
@@ -98,7 +110,41 @@ public class EntryPane extends JPanel implements ActionListener {
 		}
 	}
 	
+	private HashMap getDebitValue() {
+		HashMap<COLUMN, Double> debitValues = new HashMap<COLUMN, Double>();
+		debitValues.put(entry.getDebitColumn(), entry.getDebitValue());
+		return debitValues;
+	}
+	
+	
 
+	private HashMap getCreditValue() {
+		HashMap<COLUMN, Double> creditValues = new HashMap<COLUMN, Double>();
+		creditValues.put(entry.getCreditColumn(), entry.getCreditValue());
+		return creditValues;
+	}
+
+	private ArrayList<ArrayList> getEntryValues(){
+		ArrayList<ArrayList> values = new ArrayList<>();
+		values.add(getEntryColumns());
+		values.add(getEntryAmounts());
+		return values;
+	}
+	
+	private ArrayList<COLUMN> getEntryColumns(){
+		ArrayList<COLUMN> columns = new ArrayList<>();
+		columns.add(entry.getDebitColumn());
+		columns.add(entry.getCreditColumn());
+		return columns; 
+	}
+	
+	private ArrayList<Double> getEntryAmounts(){
+		ArrayList<Double> values = new ArrayList<>();
+		values.add(entry.getDebitValue());
+		values.add(entry.getCreditValue());
+		return values; 
+	}
+	
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -128,9 +174,35 @@ public class EntryPane extends JPanel implements ActionListener {
 				
 			}
 			
-			Entry entry =new Entry(debit,credit);
+			this.entry =new Entry(debit,credit);
+			//System.out.println(entry.getValid());
+			//System.out.println(notes.getValue());
+			if(entry.getValid()) {
+		String entryNotes = (!notes.getValue().isEmpty()) ? notes.getValue():null;
 		
-		
+		/*
+		try {
+				
+				BSD.addEntry(entry.getDebit(), entry.getDebitColumn(),
+						entry.getCredit(), entry.getCreditColumn(),
+						entryNotes);
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				System.out.print(e1);
+			}
+			*/
+			 
+			 /*
+				if(notes.getValue().isEmpty()) {
+					System.out.println("empty");
+				} else {
+				System.out.println(notes.getValue());
+				}
+				
+			*/
+			}
+			
+			
 		}
 		
 	}

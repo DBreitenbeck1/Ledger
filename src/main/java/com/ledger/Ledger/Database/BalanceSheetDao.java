@@ -62,7 +62,7 @@ public class BalanceSheetDao {
 		
 	}
 	
-	//Overloaded for Notes + Date
+	//Overloaded for Notes
 	public static void addEntry(
 			double debit, COLUMN deb, 
 			double credit, COLUMN cred,
