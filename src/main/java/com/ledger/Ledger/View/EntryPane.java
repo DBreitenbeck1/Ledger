@@ -55,8 +55,8 @@ public class EntryPane extends JPanel implements ActionListener {
 	
 	Entry entry;
 	
-	EntryPane(DatabaseConnector DC){
-		this.BSD=new BalanceSheetDao(DC.getConnection());
+	EntryPane(BalanceSheetDao bs){
+		this.BSD=bs;
 		this.setBackground(Color.darkGray);
 		this.setBounds(0,0,1500,300);
 		this.setLayout(new FlowLayout());

@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.ledger.Ledger.BalanceSheet.COLUMN;
@@ -23,7 +24,7 @@ public class BalanceSheetDao {
 	
 	
 	public BalanceSheetDao(Connection connection) {
-		this.conn=connection;
+		BalanceSheetDao.conn=connection;
 	}
 	
 	public static void createTable() throws Exception{
@@ -39,6 +40,7 @@ public class BalanceSheetDao {
 			create.executeUpdate();
 		}catch (Exception e) {
 			System.out.println(e);
+			System.out.println("createTable");
 		}
 		
 	}
@@ -156,10 +158,45 @@ public class BalanceSheetDao {
 			
 		}catch (Exception e) {
 			System.out.println(e);
+			System.out.println("getAll");
 		}
 		
 		return r;
 	}
+	
+	
+	private ArrayList<Integer> getId(){
+		ArrayList<Integer> idList = new ArrayList<>();
+		PreparedStatement statement;
+		try {
+			statement = conn.prepareStatement("SELECT ID FROM Balancesheet");
+			ResultSet results = statement.executeQuery();
+			while(results.next()) {
+				idList.add(results.getInt("ID"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e);
+			System.out.println("getId");
+				
+		}
+//		System.out.println(idList);		
+		
+		return idList;
+	}
+	
+	
+	public ArrayList<ArrayList<String>> getEntries(){
+		ArrayList<Integer> idList = getId();
+		ArrayList<ArrayList<String>> entries =  new ArrayList<>();
+		for(Integer id: idList) {
+			entries.add(getEntry(id));
+		}
+		
+		return entries;
+	}
+	
+
 	
 	
 	public static ArrayList<String> getEntry(int id){
@@ -171,15 +208,19 @@ public class BalanceSheetDao {
 			ResultSet results = statement.executeQuery();
 			
 			while(results.next()) {
-				for(int i =0; i<6;i++) {
-			
-				ent = (String.valueOf(results.getDouble(fields[i]))); 
+				for(int i =0; i<fields.length;i++) {
+					
+					if (i<6) {
+						ent = (String.valueOf(results.getDouble(fields[i])));
+					} else {
+						ent = (results.getString(fields[i]));
+					}
+					entry.add(ent);
 				//System.out.println(ent);
-				entry.add(ent);
+				
 				}
-				for(int i = 6; i<fields.length;i++) {
-					ent += (results.getString(fields[i]));
-				}
+				
+				
 				
 			}
 			

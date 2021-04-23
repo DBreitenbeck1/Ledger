@@ -47,7 +47,11 @@ public class DatabaseConnector {
 			Connection conn = DriverManager.getConnection(url, username, password);
 			setWorkingTrue();
 			return conn;
-		} catch (Exception e){System.out.println(e);}
+		} catch (Exception e){
+			System.out.println(e);
+			System.out.println("getConnection");
+		
+		}
 		
 		return null;
 		
