@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -24,13 +25,34 @@ public class BalancePane extends JPanel implements ActionListener {
 		COLUMN c = COLUMN.ASSETS;
 		DCHookup();
 		ReadOutPane RP;
+	//	ReadOutEntryPane ROP;
 		ArrayList<ArrayList<String>> allEntries = BSD.getEntries();
+		//System.out.println(allEntries.get(0));
 		//System.out.println(allEntries);
+		
+		
+		System.out.println("Entry [0] = " + allEntries.get(0));
+		
 		try {
 		//System.out.println(allEntries);
-		RP = new ReadOutPane(allEntries);
-		//System.out.println(RP.toString());
-		this.add(RP);
+		String[]columnNames = {"Assets Debit",
+				"Assets Credit", "Liability Debit",
+				"Liability Credit", 
+				"Equity Debit",
+				"Equity Credit",
+				"Notes",
+				"Date"};
+		
+	//	RP = new ReadOutPane(allEntries);
+		ReadOutEntryPane ROP = new ReadOutEntryPane(allEntries.get(0));
+		
+		//System.out.println(ROP.toString());
+		this.add(ROP);
+		
+	//	JList<JPanel> list = new JList<JPanel>();
+	//	list.add(new ReadOutEntryPane(allEntries.get(0)));
+		
+		//this.add(list);
 		} catch (Exception e) {
 			System.out.println(e);
 			System.out.println("BalancePane");
@@ -38,7 +60,7 @@ public class BalancePane extends JPanel implements ActionListener {
 		EntryPane EP = new EntryPane(BSD);
 		
 		this.add(EP);
-	//	listEntries();
+
 		
 	}
 	

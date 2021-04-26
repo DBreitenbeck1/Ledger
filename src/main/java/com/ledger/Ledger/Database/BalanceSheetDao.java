@@ -213,7 +213,11 @@ public class BalanceSheetDao {
 					if (i<6) {
 						ent = (String.valueOf(results.getDouble(fields[i])));
 					} else {
+						if(results.getString(fields[i])!=null) {
 						ent = (results.getString(fields[i]));
+						}else {
+							ent = ("null");
+						}
 					}
 					entry.add(ent);
 				//System.out.println(ent);
