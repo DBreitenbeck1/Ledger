@@ -29,9 +29,14 @@ public class BalancePane extends JPanel implements ActionListener {
 		ArrayList<ArrayList<String>> allEntries = BSD.getEntries();
 		//System.out.println(allEntries.get(0));
 		//System.out.println(allEntries);
+		String[] entry = BSD.getEntryArray(1);
 		
-		
-		System.out.println("Entry [0] = " + allEntries.get(0));
+		String[][] entries = BSD.getEntriesArray();
+		for(int i = 0; i<entry.length;i++) {
+		//	System.out.println(entries[8][i]);
+		}
+		ReadOutTable RT;
+	//	System.out.println("Entry [0] = " + allEntries.get(0));
 		
 		try {
 		//System.out.println(allEntries);
@@ -42,12 +47,13 @@ public class BalancePane extends JPanel implements ActionListener {
 				"Equity Credit",
 				"Notes",
 				"Date"};
-		
-	//	RP = new ReadOutPane(allEntries);
-		ReadOutEntryPane ROP = new ReadOutEntryPane(allEntries.get(0));
+	//	RT = new ReadOutTable(entries, columnNames);
+		RP = new ReadOutPane(entries,columnNames);
+		this.add(RP);
+		//ReadOutEntryPane ROP = new ReadOutEntryPane(allEntries.get(0));
 		
 		//System.out.println(ROP.toString());
-		this.add(ROP);
+		//this.add(ROP);
 		
 	//	JList<JPanel> list = new JList<JPanel>();
 	//	list.add(new ReadOutEntryPane(allEntries.get(0)));

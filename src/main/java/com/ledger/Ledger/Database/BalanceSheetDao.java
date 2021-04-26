@@ -197,6 +197,20 @@ public class BalanceSheetDao {
 	}
 	
 
+	public String[][] getEntriesArray(){
+		ArrayList<Integer> idList = getId();
+		String[][] entries = new String[idList.size()][8];
+		int idIndex;
+		for(Integer id: idList) {
+			idIndex=idList.indexOf(id);
+			
+			entries[idIndex]=getEntryArray(id);
+		}
+		
+		return entries;
+		
+	}
+	
 	
 	
 	public static ArrayList<String> getEntry(int id){
@@ -233,6 +247,48 @@ public class BalanceSheetDao {
 		}
 		
 		return entry;
+	}
+	
+	public static String[] getEntryArray(int id) {
+		String[] entry = new String[8];
+		String ent ="";
+		try {
+			PreparedStatement statement =
+			conn.prepareStatement("SELECT * FROM Balancesheet WHERE ID="+id);
+			ResultSet results = statement.executeQuery();
+			
+			while(results.next()) {
+				for(int i =0; i<fields.length;i++) {
+					
+					if (i<6) {
+						
+						ent = (String.valueOf(results.getDouble(fields[i])));
+					//	System.out.println(ent);
+						entry[i]=ent;
+					} else {
+						if(results.getString(fields[i])!=null) {
+						ent = (results.getString(fields[i]));
+						
+						}else {
+							ent = ("null");
+						}
+					}
+					entry[i]=ent;
+				//System.out.println(ent);
+				
+				}
+				
+				
+				
+			}
+			
+		}catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		return entry;
+		
+		
 	}
 	
 

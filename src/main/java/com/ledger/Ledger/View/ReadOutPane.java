@@ -12,9 +12,19 @@ import javax.swing.JTable;
 public class ReadOutPane extends JPanel {
 	ArrayList<ArrayList<String>> entries;
 	ArrayList<JPanel> readOuts;
-	JList<JPanel> list;
+	JTable table;
+	String [][] allEntries;
+	String [] columnNames;
 	
 	
+	public ReadOutPane(String[][] entries, String[]columnNames) {
+		
+		this.table=new JTable(entries, columnNames);
+		table.setVisible(true);
+		this.setBackground(Color.darkGray);
+		this.setBounds(0,0,1500,300);
+		this.add(table);
+	}
 	
 	
 	public ReadOutPane(ArrayList<ArrayList<String>> entriesList){
@@ -25,7 +35,7 @@ public class ReadOutPane extends JPanel {
 //	this.setLayout(new FlowLayout());
 	
 	listEntries();
-	this.add(list);
+	
 	}
 	
 	private void listEntries() {
