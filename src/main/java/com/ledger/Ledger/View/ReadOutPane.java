@@ -22,7 +22,7 @@ public class ReadOutPane extends JPanel {
 		this.table=new JTable(entries, columnNames);
 		table.setVisible(true);
 		this.setBackground(Color.darkGray);
-		this.setBounds(0,0,1500,300);
+	//	this.setBounds(0,0,1500,300);
 		this.add(table);
 	}
 	

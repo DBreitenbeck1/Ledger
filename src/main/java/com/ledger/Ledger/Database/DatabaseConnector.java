@@ -15,7 +15,7 @@ public class DatabaseConnector {
 		this.url=url;
 	/*	
 		String driver =  "com.mysql.cj.jdbc.Driver";
-		String url = "jdbc:mysql://localhost:3306/mysite?useSSL=FALSE&serverTimezone=America/Detroit";
+		String url = "jdbc:mysql://localhost:3306/Ledger?useSSL=FALSE&serverTimezone=America/Detroit";
 		String username = "root";
 		String password = "Perepiteia#";
 		*/

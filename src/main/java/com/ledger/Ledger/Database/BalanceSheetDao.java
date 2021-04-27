@@ -391,5 +391,75 @@ public class BalanceSheetDao {
 		return result;
 	}
 	
+	
+	public double getTotalDebit(COLUMN c) {
+		String col = selectDebitColumn(c);
+		
+		double sum = 0.0;
+		try {
+		PreparedStatement statement =
+				conn.prepareStatement("SELECT SUM("+ col +") FROM Balancesheet;");
+		ResultSet results = statement.executeQuery();
+		if (results.next()) {
+		
+		sum = results.getDouble(1);
+		
+		}
+		} catch (Exception e) {
+			System.out.print(e);
+		}
+		
+		
+		return sum;
+	}
+	
+	
+	public double getTotalCredit(COLUMN c) {
+		String col = selectCreditColumn(c);
+		double sum = 0.0;
+		try {
+		PreparedStatement statement =
+				conn.prepareStatement("SELECT SUM("+ col +") FROM Balancesheet;");
+		ResultSet results = statement.executeQuery();
+		if (results.next()) {
+			sum = results.getDouble(1);
+		}
+		} catch (Exception e) {
+			System.out.print(e);
+		}	
+		return sum;
+	}
 
+	public ArrayList<Double> getDebitColumnAmounts(COLUMN c){
+		ArrayList<Double> amountList = new ArrayList<>();
+		String col = selectDebitColumn(c);
+		PreparedStatement statement;
+		try {
+			statement = conn.prepareStatement("SELECT "+ col +" FROM Balancesheet");
+			ResultSet results = statement.executeQuery();
+			System.out.println(results.getFetchSize());
+			while(results.next()) {
+				System.out.println(results.getDouble(1));
+				amountList.add(results.getDouble(1));
+			}
+			/*
+			statement = conn.prepareStatement("SELECT ID FROM Balancesheet");
+			ResultSet results = statement.executeQuery();
+			while(results.next()) {
+				idList.add(results.getInt("ID"));
+			}
+			*/
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e);
+			System.out.println("getColAmount");
+				
+		}
+		//System.out.println(amountList);		
+		
+		return amountList;
+	}
+	
+	
 }

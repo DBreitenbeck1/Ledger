@@ -3,6 +3,9 @@ package com.ledger.Ledger;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.sql.Connection;
+import java.util.ArrayList;
+
 import org.junit.Test;
 
 import com.ledger.Ledger.BalanceSheet.BalanceSheet;
@@ -10,14 +13,26 @@ import com.ledger.Ledger.BalanceSheet.COLUMN;
 import com.ledger.Ledger.BalanceSheet.Credit;
 import com.ledger.Ledger.BalanceSheet.Debit;
 import com.ledger.Ledger.BalanceSheet.Entry;
+import com.ledger.Ledger.Database.BalanceSheetDao;
 import com.ledger.Ledger.Database.DatabaseConnector;
 import com.ledger.Ledger.IncomeStatement.IncomeEntry;
 
 /**
  * Unit test for simple App.
  */
-public class AppTest 
-{
+public class AppTest {
+	DatabaseConnector DB = new DatabaseConnector("com.mysql.cj.jdbc.Driver", "jdbc:mysql://localhost:3306/Ledger?useSSL=FALSE&serverTimezone=America/Detroit");
+	Connection con; 
+	BalanceSheetDao BSD; 
+	
+	public void createDatabaseConnection() {
+		DB.setUsername("root");
+		DB.setPassword("Perepiteia#");
+		this.con=DB.getConnection();
+		this.BSD=new BalanceSheetDao(con);
+	}
+
+
     /**
      * Rigorous Test :-)
      */
@@ -265,5 +280,37 @@ public class AppTest
 	   assertEquals((Double)80.00,entry.getNetIncome());
    }
    
+   
+   
+   
+   @Test
+   public void ColumnTotalFirstTest() {
+	   createDatabaseConnection();
+	   Double equityDebit=0.0;
+	   
+	   equityDebit=BSD.getTotalDebit(COLUMN.EQUITY);
+	   
+	   assertEquals((Double)45.50, equityDebit);
+   }
+   
+   
+   @Test public void ColumnTotalSecondTest() {
+	   createDatabaseConnection();
+	   ArrayList<Double> amountList = new ArrayList<>();
+	   amountList=BSD.getDebitColumnAmounts(COLUMN.ASSETS);
+	  // System.out.println(amountList);
+	   assertEquals(13, amountList.size());
+	   
+   }
+   
+   @Test
+   public void ColumnTotalThirdTest() {
+	   createDatabaseConnection();
+	   Double equityDebit=0.0;
+	   
+	   equityDebit=BSD.getTotalCredit(COLUMN.EQUITY);
+	   
+	   assertEquals((Double)127.45, equityDebit);
+   }
    
 }
