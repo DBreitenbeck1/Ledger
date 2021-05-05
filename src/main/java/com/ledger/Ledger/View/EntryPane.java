@@ -51,12 +51,14 @@ public class EntryPane extends JPanel implements ActionListener {
 
 	JButton submit = new JButton();
 	BalanceSheetDao BSD;
+	BalancePane BP;
 	
 	
 	Entry entry;
 	
-	EntryPane(BalanceSheetDao bs){
+	EntryPane(BalanceSheetDao bs, BalancePane BP){
 		this.BSD=bs;
+		this.BP=BP;
 		this.setBackground(Color.darkGray);
 		this.setBounds(0,0,1500,300);
 		this.setLayout(new FlowLayout());
@@ -96,6 +98,7 @@ public class EntryPane extends JPanel implements ActionListener {
 		this.add(submit);
 	}
 	
+
 	private boolean checkValid(){
 		int count=0;
 		for(int i =0; i<entries.length;i++) {
@@ -145,12 +148,19 @@ public class EntryPane extends JPanel implements ActionListener {
 		return values; 
 	}
 	
+	private boolean checkNull() {
+		
+		
+		return false; 
+	}
+	
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Credit credit =null;
 		Debit debit =null;
 		int count=0;
+		
 		if(!checkValid()) {
 			System.out.println("Invalid Entry");
 		} else {
@@ -174,13 +184,15 @@ public class EntryPane extends JPanel implements ActionListener {
 				
 			}
 			
+			if(debit!=null&&credit!=null) {
+			
 			this.entry =new Entry(debit,credit);
 			//System.out.println(entry.getValid());
 			//System.out.println(notes.getValue());
 			if(entry.getValid()) {
 		String entryNotes = (!notes.getValue().isEmpty()) ? notes.getValue():null;
 		
-		/*
+		
 		try {
 				
 				BSD.addEntry(entry.getDebit(), entry.getDebitColumn(),
@@ -190,17 +202,23 @@ public class EntryPane extends JPanel implements ActionListener {
 				// TODO Auto-generated catch block
 				System.out.print(e1);
 			}
-			*/
+			
 			 
-			 /*
+			 
 				if(notes.getValue().isEmpty()) {
 					System.out.println("empty");
 				} else {
 				System.out.println(notes.getValue());
 				}
 				
-			*/
+		
 			}
+			BP.setRP();
+			
+		} else {
+			System.out.println("Invalid Entry");
+			
+		}
 			
 			
 		}

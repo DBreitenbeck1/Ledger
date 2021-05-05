@@ -18,13 +18,21 @@ import com.ledger.Ledger.Database.DatabaseConnector;
 
 public class BalancePane extends JPanel implements ActionListener {
 	BalanceSheetDao BSD;
+	ReadOutPane RP;
+	String[]columnNames = {"Assets Debit",
+			"Assets Credit", "Liability Debit",
+			"Liability Credit", 
+			"Equity Debit",
+			"Equity Credit",
+			"Notes",
+			"Date"};
+	
 	
 	public BalancePane(){
 		this.setBackground(Color.GRAY);
 		this.setBounds(0,0,1000,450);
 		COLUMN c = COLUMN.ASSETS;
 		DCHookup();
-		ReadOutPane RP;
 	//	ReadOutEntryPane ROP;
 		ArrayList<ArrayList<String>> allEntries = BSD.getEntries();
 		//System.out.println(allEntries.get(0));
@@ -35,18 +43,12 @@ public class BalancePane extends JPanel implements ActionListener {
 		for(int i = 0; i<entry.length;i++) {
 		//	System.out.println(entries[8][i]);
 		}
-		ReadOutTable RT;
+		
 	//	System.out.println("Entry [0] = " + allEntries.get(0));
 		
 		try {
 		//System.out.println(allEntries);
-		String[]columnNames = {"Assets Debit",
-				"Assets Credit", "Liability Debit",
-				"Liability Credit", 
-				"Equity Debit",
-				"Equity Credit",
-				"Notes",
-				"Date"};
+	
 	//	RT = new ReadOutTable(entries, columnNames);
 		RP = new ReadOutPane(entries,columnNames);
 		this.add(RP);
@@ -63,7 +65,7 @@ public class BalancePane extends JPanel implements ActionListener {
 			System.out.println(e);
 			System.out.println("BalancePane");
 		}
-		EntryPane EP = new EntryPane(BSD);
+		EntryPane EP = new EntryPane(BSD, this);
 		
 		this.add(EP);
 
@@ -95,17 +97,30 @@ public class BalancePane extends JPanel implements ActionListener {
 	
 	
 	private void DCHookup() {
+		try {
 		DatabaseConnector dcb = new DatabaseConnector("com.mysql.cj.jdbc.Driver",
 				"jdbc:mysql://localhost:3306/Ledger?useSSL=FALSE&serverTimezone=America/Detroit");
 		dcb.setUsername("root");
 		dcb.setPassword("Perepiteia#");
 		this.BSD = new BalanceSheetDao(dcb.getConnection());
+		} catch(Exception e) {
+			System.out.println(e);
+		}
 
 	}
 	
-
+	public void setRP() {
+		this.remove(RP);
+		String[][] entries = BSD.getEntriesArray();
+		RP = new ReadOutPane(entries,columnNames);
+		this.add(RP);
+	}
+	
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
+		
 		// TODO Auto-generated method stub
 		
 	}
