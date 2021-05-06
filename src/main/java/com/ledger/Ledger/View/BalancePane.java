@@ -19,6 +19,7 @@ import com.ledger.Ledger.Database.DatabaseConnector;
 public class BalancePane extends JPanel implements ActionListener {
 	BalanceSheetDao BSD;
 	ReadOutPane RP;
+	TotalPane TP;
 	String[]columnNames = {"Assets Debit",
 			"Assets Credit", "Liability Debit",
 			"Liability Credit", 
@@ -26,6 +27,8 @@ public class BalancePane extends JPanel implements ActionListener {
 			"Equity Credit",
 			"Notes",
 			"Date"};
+	
+
 	
 	
 	public BalancePane(){
@@ -40,6 +43,7 @@ public class BalancePane extends JPanel implements ActionListener {
 		String[] entry = BSD.getEntryArray(1);
 		
 		String[][] entries = BSD.getEntriesArray();
+		String[][]totals=BSD.getTotals();
 		for(int i = 0; i<entry.length;i++) {
 		//	System.out.println(entries[8][i]);
 		}
@@ -51,7 +55,9 @@ public class BalancePane extends JPanel implements ActionListener {
 	
 	//	RT = new ReadOutTable(entries, columnNames);
 		RP = new ReadOutPane(entries,columnNames);
+		TP = new TotalPane(totals,columnNames);
 		this.add(RP);
+		this.add(TP);
 		//ReadOutEntryPane ROP = new ReadOutEntryPane(allEntries.get(0));
 		
 		//System.out.println(ROP.toString());

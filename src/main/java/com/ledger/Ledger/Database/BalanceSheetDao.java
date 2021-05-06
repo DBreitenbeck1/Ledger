@@ -429,6 +429,63 @@ public class BalanceSheetDao {
 		}	
 		return sum;
 	}
+	
+	
+	public String[][] getTotals(){
+		String[][] totals = new String[1][8];
+		String col;
+		
+		for(int i = 0; i<5;i+=2) {
+			col=fields[i];
+		//	System.out.println(col);
+			double sum = 0.0;
+			try {
+			PreparedStatement statement =
+					conn.prepareStatement("SELECT SUM("+ col +") FROM Balancesheet;");
+			ResultSet results = statement.executeQuery();
+			if (results.next()) {
+			
+			sum = results.getDouble(1);
+			//System.out.println(sum);
+			totals[0][i]=String.valueOf(sum);
+			
+			}
+			} catch (Exception e) {
+				System.out.print(e);
+			}
+			
+		}
+		
+		for(int i = 1; i<=5;i+=2) {
+			col=fields[i];
+			double sum = 0.0;
+			try {
+			PreparedStatement statement =
+					conn.prepareStatement("SELECT SUM("+ col +") FROM Balancesheet;");
+			ResultSet results = statement.executeQuery();
+			if (results.next()) {
+			
+			sum = results.getDouble(1);
+			totals[0][i]=String.valueOf(sum);
+			
+			}
+			} catch (Exception e) {
+				System.out.print(e);
+			}
+			
+		}
+		totals[0][6]="";
+		totals[0][7]="";
+		
+		
+		for(int i = 0; i<6;i++) {
+			System.out.println(totals[0][i]);
+		}
+		
+		
+		return totals;
+	}
+	
 
 	public ArrayList<Double> getDebitColumnAmounts(COLUMN c){
 		ArrayList<Double> amountList = new ArrayList<>();

@@ -299,7 +299,7 @@ public class AppTest {
 	   ArrayList<Double> amountList = new ArrayList<>();
 	   amountList=BSD.getDebitColumnAmounts(COLUMN.ASSETS);
 	  // System.out.println(amountList);
-	   assertEquals(13, amountList.size());
+	   assertEquals(17, amountList.size());
 	   
    }
    
@@ -311,6 +311,14 @@ public class AppTest {
 	   equityDebit=BSD.getTotalCredit(COLUMN.EQUITY);
 	   
 	   assertEquals((Double)127.45, equityDebit);
+   }
+   
+   @Test
+   public void TotalsFirstTest() {
+	   createDatabaseConnection();
+	   String[][]totals=BSD.getTotals();
+	   
+	   assertEquals("331.25", totals[0][0]);
    }
    
 }
