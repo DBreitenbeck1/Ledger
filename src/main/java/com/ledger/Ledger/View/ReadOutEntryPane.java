@@ -1,14 +1,19 @@
 package com.ledger.Ledger.View;
 
 import java.awt.BorderLayout;
+
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+
+//NOT NEEDED??---------
 public class ReadOutEntryPane extends JPanel {
 	
 	ArrayList<String> entries;
@@ -29,13 +34,18 @@ public class ReadOutEntryPane extends JPanel {
 		
 		System.out.println(entries.get(0));
 		table = new JTable(ents,columnNames);
+		table.setPreferredScrollableViewportSize(new Dimension(1500, 800));
+		table.setVisible(true);
+		JScrollPane jps = new JScrollPane(table);
+		jps.add(table.getTableHeader());
 		this.setBackground(Color.darkGray);
-		this.setBounds(0,0,1500,300);
-		this.setLayout(new FlowLayout());
+		//this.setBounds(0,0,1700,800);
+		this.setLayout(new BorderLayout());
 		
 	//	addLabels();
 	//	setTable();
-		this.add(table);
+//		this.add(jps);
+//		this.add(table.getTableHeader(),BorderLayout.NORTH);
 	}
 	
 	private void setEnts() {
