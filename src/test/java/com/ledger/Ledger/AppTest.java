@@ -293,7 +293,7 @@ public class AppTest {
 	   assertEquals((Double)45.50, equityDebit);
    }
    
-   
+   /*
    @Test public void ColumnTotalSecondTest() {
 	   createDatabaseConnection();
 	   ArrayList<Double> amountList = new ArrayList<>();
@@ -302,7 +302,7 @@ public class AppTest {
 	   assertEquals(17, amountList.size());
 	   
    }
-   
+
    @Test
    public void ColumnTotalThirdTest() {
 	   createDatabaseConnection();
@@ -318,7 +318,77 @@ public class AppTest {
 	   createDatabaseConnection();
 	   String[][]totals=BSD.getTotals();
 	   
-	   assertEquals("331.25", totals[0][0]);
+	   assertEquals("115.7", totals[0][0]);
    }
+   
+   */
+   
+   
+   
+   @Test
+   public void RoundingTest() {
+	   double sum=54.4599999*1000;
+	   int a = (int)(sum);
+	   assertEquals(54459, a);
+	   
+   }
+   
+   @Test
+   public void RoundingTestTwo() {
+	   double sum=54.4599999*1000;
+	   int a = (int)(sum);
+	   int d = a%10;
+	   assertEquals(9,d);
+	   
+   }
+   
+   @Test
+   public void RoundingTestThree() {
+	   double sum=54.4599999*1000;
+	   double tot=54.4599999*100;
+	   int b = (int)(tot);
+	   int a = (int)(sum);
+	   int d = a%10;
+	   if(d>=5) {
+		   b+=1;
+	   } 
+	   
+	   assertEquals(5446,b);
+	   
+   }
+   
+
+   @Test
+   public void RoundingTestFour() {
+	   createDatabaseConnection();
+	   double sum=54.4599999;
+	   boolean should = BSD.shouldRoundUp(sum);
+	   
+	   assertTrue(should);
+	   
+   }
+   
+
+   @Test
+   public void RoundingTestFive() {
+	   createDatabaseConnection();
+	   double sum=54.4539999;
+	   boolean should = BSD.shouldRoundUp(sum);
+	   
+	   assertTrue(!should);
+	   
+   }
+   
+   @Test
+   public void RoundingTestSix() {
+	   createDatabaseConnection();
+	   double sum=54.4599999;
+	   Double a = BSD.round(sum);
+	 
+	  assertEquals((Double)54.46, a);
+	   
+   }
+   
+   
    
 }

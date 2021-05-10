@@ -311,7 +311,7 @@ public class BalanceSheetDao {
 	}
 	
 	
-	private static void clearEntry(int id) {
+	public static void clearEntry(int id) {
 		
 		for (int i = 0; i<6;i++) {
 				try {
@@ -456,7 +456,7 @@ public class BalanceSheetDao {
 		for(int i =1; i<4;i++ ) {
 			double total = 0.0;
 			col=COLUMN.getColumn(i);
-			total=decimalLimit(getTotalValue(col));
+			total=round(getTotalValue(col));
 			totals[0][count] = String.valueOf(total);
 			count++;
 			
@@ -552,15 +552,34 @@ public class BalanceSheetDao {
 	
 	
 	private double decimalLimit(double d) {
-		double sum = d*100;
-		System.out.println(sum);
-		int a = (int)(sum);
-		sum=(double)(a);
-		System.out.println(a);
-		sum = sum/100;
+		
+		double sum = round(d);
+		
 		
 		return sum;
 	}
 	
+	
+	public boolean shouldRoundUp(double d) {
+		double sum = d*1000;
+	
+		int a = (int)(sum);
+		int lastDec = a%10;
+		return (lastDec>=5);
+	}
+	
+	
+	public double round(double d) {
+		
+		double sum = d*100;
+		int a = (int)(sum);
+		if(shouldRoundUp(d)) {
+			a+=1;
+		}
+		sum=(double)(a);
+		sum=sum/100;
+		
+		return sum;
+	}
 	
 }
