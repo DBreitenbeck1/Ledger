@@ -392,6 +392,23 @@ public class BalanceSheetDao {
 	}
 	
 	
+	public double getTotalValue(COLUMN c) {
+		double total = 0.0;
+		
+		double debsum= getTotalDebit(c);
+		double credsum = getTotalCredit(c);
+		
+		if(c.equals(COLUMN.ASSETS)) {
+			total=debsum-credsum;
+		} else {
+			total = credsum-debsum;
+		}
+		
+		
+		return total;
+	}
+	
+	
 	public double getTotalDebit(COLUMN c) {
 		String col = selectDebitColumn(c);
 		
@@ -432,8 +449,21 @@ public class BalanceSheetDao {
 	
 	
 	public String[][] getTotals(){
-		String[][] totals = new String[1][8];
-		String col;
+		String[][] totals = new String[1][5];
+		COLUMN col;
+		int count = 0;
+		
+		for(int i =1; i<4;i++ ) {
+			double total = 0.0;
+			col=COLUMN.getColumn(i);
+			total=decimalLimit(getTotalValue(col));
+			totals[0][count] = String.valueOf(total);
+			count++;
+			
+		}
+		
+		/*
+		
 		
 		for(int i = 0; i<5;i+=2) {
 			col=fields[i];
@@ -474,12 +504,14 @@ public class BalanceSheetDao {
 			}
 			
 		}
-		totals[0][6]="";
-		totals[0][7]="";
+		
+		*/
+		totals[0][3]="";
+		totals[0][4]="";
 		
 		
-		for(int i = 0; i<6;i++) {
-			System.out.println(totals[0][i]);
+		for(int i = 0; i<5;i++) {
+		//	System.out.println(totals[0][i]);
 		}
 		
 		
@@ -516,6 +548,18 @@ public class BalanceSheetDao {
 		//System.out.println(amountList);		
 		
 		return amountList;
+	}
+	
+	
+	private double decimalLimit(double d) {
+		double sum = d*100;
+		System.out.println(sum);
+		int a = (int)(sum);
+		sum=(double)(a);
+		System.out.println(a);
+		sum = sum/100;
+		
+		return sum;
 	}
 	
 	

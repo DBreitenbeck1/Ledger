@@ -28,6 +28,12 @@ public class BalancePane extends JPanel implements ActionListener {
 			"Notes",
 			"Date"};
 	
+	String[]totalNames = {"Assets", 
+			"Liability",
+			"Equity",
+			"Notes",
+			"Date"};
+	
 
 	
 	
@@ -55,7 +61,7 @@ public class BalancePane extends JPanel implements ActionListener {
 	
 	//	RT = new ReadOutTable(entries, columnNames);
 		RP = new ReadOutPane(entries,columnNames);
-		TP = new TotalPane(totals,columnNames);
+		TP = new TotalPane(totals,totalNames);
 		this.add(RP);
 		this.add(TP);
 		//ReadOutEntryPane ROP = new ReadOutEntryPane(allEntries.get(0));

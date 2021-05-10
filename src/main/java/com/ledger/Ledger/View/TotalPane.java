@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.*;
-
+//Should show value totals, so only three columns
 public class TotalPane extends JPanel {
 	JTable table;
 	String [][] allEntries;
