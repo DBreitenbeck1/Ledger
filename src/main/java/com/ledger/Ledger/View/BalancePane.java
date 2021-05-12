@@ -125,7 +125,7 @@ public class BalancePane extends JPanel implements ActionListener {
 
 	}
 	
-	public void setRP() {
+	public void resetReadAndTotals() {
 		this.remove(RP);
 		this.remove(TP);
 		this.remove(EP);
@@ -140,10 +140,7 @@ public class BalancePane extends JPanel implements ActionListener {
 		SwingUtilities.updateComponentTreeUI(this);
 	}
 	
-	
-	public void resetReadAndTotals() {
-		
-	}
+
 	
 	
 	@Override

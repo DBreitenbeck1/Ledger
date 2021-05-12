@@ -216,7 +216,7 @@ public class EntryPane extends JPanel implements ActionListener {
 				
 		
 			}
-			BP.setRP();
+			BP.resetReadAndTotals();
 			
 		} else {
 			System.out.println("Invalid Entry");
