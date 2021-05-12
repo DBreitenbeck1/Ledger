@@ -53,6 +53,9 @@ public class EntryPane extends JPanel implements ActionListener {
 	BalanceSheetDao BSD;
 	BalancePane BP;
 	
+	ReadOutPane RP;
+	TotalPane TP;
+	
 	
 	Entry entry;
 	

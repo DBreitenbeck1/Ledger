@@ -8,18 +8,22 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import com.ledger.Ledger.BalanceSheet.COLUMN;
 import com.ledger.Ledger.Database.BalanceSheetDao;
 import com.ledger.Ledger.Database.DatabaseConnector;
 
 public class BalancePane extends JPanel implements ActionListener {
+	JFrame main; 
 	BalanceSheetDao BSD;
 	ReadOutPane RP;
 	TotalPane TP;
+	EntryPane EP;
 	String[]columnNames = {"Assets Debit",
 			"Assets Credit", "Liability Debit",
 			"Liability Credit", 
@@ -38,11 +42,11 @@ public class BalancePane extends JPanel implements ActionListener {
 	
 	
 	public BalancePane(){
+
 		this.setBackground(Color.GRAY);
 		this.setBounds(0,0,1000,450);
 		COLUMN c = COLUMN.ASSETS;
 		DCHookup();
-	//	ReadOutEntryPane ROP;
 		ArrayList<ArrayList<String>> allEntries = BSD.getEntries();
 		//System.out.println(allEntries.get(0));
 		//System.out.println(allEntries);
@@ -77,7 +81,7 @@ public class BalancePane extends JPanel implements ActionListener {
 			System.out.println(e);
 			System.out.println("BalancePane");
 		}
-		EntryPane EP = new EntryPane(BSD, this);
+		EP = new EntryPane(BSD, this);
 		
 		this.add(EP);
 
@@ -123,9 +127,22 @@ public class BalancePane extends JPanel implements ActionListener {
 	
 	public void setRP() {
 		this.remove(RP);
+		this.remove(TP);
+		this.remove(EP);
+		String[][]totals=BSD.getTotals();
 		String[][] entries = BSD.getEntriesArray();
+		TP = new TotalPane(totals,totalNames);
 		RP = new ReadOutPane(entries,columnNames);
+		EP = new EntryPane(BSD, this);
 		this.add(RP);
+		this.add(TP);
+		this.add(EP);
+		SwingUtilities.updateComponentTreeUI(this);
+	}
+	
+	
+	public void resetReadAndTotals() {
+		
 	}
 	
 	
